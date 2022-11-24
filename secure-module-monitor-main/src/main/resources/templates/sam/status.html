@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--suppress HtmlRequiredTitleElement -->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(title = 'Estado del SAM')"></head>
+<body>
+
+<div class="wrapper">
+    <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <div class="main-panel ps">
+        <nav th:replace="fragments/navbar :: navbar(title='Estado del SAM')"></nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6" th:each="sam: ${samList}">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title" th:text="${'SAM ' + sam.samNumber}"></h4>
+                                <p class="category" th:text="${'UID: ' + sam.uidSam}"></p>
+                                <p class="category" th:text="${'Último uso:    ' + sam.date}"></p>
+                            </div>
+                            <div class="card-content">
+                                <i class="fa fa-5x fa-dot-circle-o text-center" th:classappend="${sam.status == 'OK' ? 'text-success' : 'text-danger'}"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer">
+        </footer>
+    </div>
+</div>
+
+<section th:replace="fragments/scripts :: scripts"></section>
+
+<script type="text/javascript">
+    $(function () {
+        console.log('Ready!')
+        $.get("/sam/file-list", function (data, status) {
+
+            let successSeries = [];
+            let failedSeries = [];
+            let lbls = [];
+
+            for (let s of data){
+                lbls.push("SAM " + s.samNumber)
+                successSeries.push(s.successUses)
+                failedSeries.push(s.failedUses)
+            }
+
+            let chartData = {
+                labels: lbls,
+                series: [successSeries, failedSeries]
+            };
+
+            let options = {seriesBarDistance: 10, axisX: {showGrid: false}, height: "800px", axisY: {stepSize: 1}};
+            let responsiveOptions = [];
+            Chartist.Line('#chartTotalHandled', chartData, options, responsiveOptions);
+            console.log("STATUS: " + status, data)
+        })
+    });
+</script>
+</body>
+</html>

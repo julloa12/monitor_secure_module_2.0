@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--suppress HtmlRequiredTitleElement -->
+<html lang="en">
+<head th:replace="fragments/head :: head(title='Peores tiempos de autenticación')"></head>
+<body>
+
+<div class="wrapper">
+    <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <div class="main-panel ps">
+        <nav th:replace="fragments/navbar :: navbar(title='Peores tiempos de autenticación')"></nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">La transacción más lenta (Seg)</div>
+                            </div>
+                            <div class="card-content">
+                                <div id="svg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer">
+        </footer>
+    </div>
+</div>
+
+<section th:replace="fragments/scripts :: scripts"></section>
+
+<script type="text/javascript">
+    $(function () {
+        console.log('Ready!')
+        $.get("/sam/file-list", function (data, status) {
+
+            let successSeries = [];
+            let failedSeries = [];
+            let lbls = [];
+
+            for (let s of data){
+                if(s.maxT>0) {
+                    lbls.push("SAM " + s.samNumber)
+                    successSeries.push((s.maxT) / 1000)
+                }
+            }
+
+            let chartData = {
+                labels: lbls,
+                series: [successSeries, failedSeries]
+            };
+
+
+
+
+            var options = {  height: "500px", axisX: { position: 'start',
+                    axititle: 'Segundos'
+                },  axisY:{ position: 'end',
+                    title: "axidddsY Title"
+                } };
+
+            let responsiveOptions = [];
+            Chartist.Bar('#svg', chartData, options );
+            console.log("STATUS: " + status, data,options)
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:replace="fragments/head :: head(title = 'Transacciones Atendidas')">
+</head>
+<body>
+
+<div class="wrapper">
+    <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <div class="main-panel ps">
+        <nav th:replace="fragments/navbar :: navbar(title='Transacciones Atendidas')"></nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">Distribución de transacciones</div>
+                            </div>
+                            <div class="card-content">
+                                    <canvas id="myChart" ></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer">
+        </footer>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@latest/dist/Chart.min.js"></script>
+
+<section th:replace="fragments/scripts :: scripts"></section>
+
+<script type="text/javascript">
+    $(function () {
+
+        console.log('Ready!')
+        $.get("/sam/file-list", function (adata, status) {
+            var successSeries = [];
+            let failedSeries = [];
+            let lbls = [];
+            var total=0;
+            for(let s of adata){
+                total=s.failedUses+total;
+            }
+
+            for (let s of adata) {
+                if (s.failedUses>0) {
+                    lbls.push("SAM [" + s.samNumber + "] ="+ Math.round(((100*s.failedUses)/total)*100)/100 + "% ")
+                    successSeries.push(s.successUses)
+                    failedSeries.push(s.failedUses)
+                }
+            }
+
+            var chartData = {
+                series: failedSeries
+            };
+
+    const data ={
+        labels: lbls,
+        datasets: [{
+            data: failedSeries,
+            backgroundColor: [
+                'rgba(46, 44, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 202, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 164, 0.2)',
+                'rgba(255, 19, 164, 0.2)',
+                'rgba(25, 159, 64, 0.2)',
+                'rgba(255, 59, 64, 0.2)',
+                'rgba(255, 15, 4, 0.2)',
+                'rgba(25, 15, 164, 0.2)'
+            ],
+            borderColor: [
+                'rgba(46, 44, 192, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(255, 159, 164, 0.2)',
+                'rgba(255, 19, 164, 0.2)',
+                'rgba(25, 159, 64, 0.2)',
+                'rgba(255, 59, 64, 0.2)',
+                'rgba(255, 15, 4, 0.2)',
+                'rgba(25, 15, 164, 0.2)'
+            ],
+            borderWidth: 1
+        }]
+    };
+    const config ={
+        type: 'pie',
+        data   ,
+        options: {
+        }};
+            const $myChart = document.querySelector("#myChart");
+
+      new Chart($myChart, config);
+
+
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<div th:fragment="sidenav" class="sidebar" data-background-color="white" data-active-color="info">
+
+  <div class="logo">
+    <a href="/" class="simple-text logo-mini">
+      SM
+    </a>
+    <a href="/" class="simple-text logo-normal">
+      SAM Monitor
+    </a>
+  </div>
+  <div class="sidebar-wrapper">
+    <!--/*<div class="user">
+      <div class="info">
+        <div class="photo">
+          <img src="../../assets/img/faces/face-2.jpg"/>
+        </div>
+        <a data-toggle="collapse" href="#collapseExample" class="collapsed">
+          <span>Chet Faker<b class="caret"></b></span>
+        </a>
+        <div class="clearfix"></div>
+        <div class="collapse" id="collapseExample">
+          <ul class="nav">
+            <li>
+              <a href="#profile">
+                <span class="sidebar-mini">Mp</span>
+                <span class="sidebar-normal">My Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#edit">
+                <span class="sidebar-mini">Ep</span>
+                <span class="sidebar-normal">Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="#settings">
+                <span class="sidebar-mini">S</span>
+                <span class="sidebar-normal">Settings</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>*/-->
+    <ul class="nav">
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/' ? 'active':''}">
+        <a href="/">
+          <i class="ti-home"></i>
+          <p>Inicio</p>
+        </a>
+      </li>
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/handled' ? 'active':''}">
+        <a th:href="@{/sam/handled}">
+          <i class="fa fa-handshake-o"></i>
+          <p>Rendimiento de SAM</p>
+        </a>
+      </li>
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/status' ? 'active':''}">
+        <a th:href="@{/sam/status}">
+          <i class="fa fa-check-square"></i>
+          <p>Estado</p>
+        </a>
+      </li>
+
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/uses' ? 'active':''}">
+        <a th:href="@{/sam/uses}">
+          <i class="fa fa-cog fa-spin"></i>
+          <p>Autenticaciones ok</p>
+        </a>
+      </li>
+
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/failed' ? 'active':''}">
+        <a th:href="@{/sam/failed}">
+          <i class="fa fa-frown-o"></i>
+          <p>Autenticaciones fallidas </p>
+        </a>
+      </li>
+
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/times' ? 'active':''}">
+        <a th:href="@{/sam/times}">
+          <i class="fa fa-wheelchair-alt"></i>
+          <p>promedio de respuesta</p>
+        </a>
+      </li>
+
+
+      <li th:classappend="${#httpServletRequest.getRequestURI() == '/sam/slowness' ? 'active':''}">
+        <a th:href="@{/sam/slowness}">
+          <i class="fa fa-thumbs-down"></i>
+          <p>Los peores tiempos</p>
+        </a>
+      </li>
+
+      <!--/*<li>
+        <a data-toggle="collapse" href="#componentsExamples">
+          <i class="ti-package"></i>
+          <p>Components
+            <b class="caret"></b>
+          </p>
+        </a>
+        <div class="collapse" id="componentsExamples">
+          <ul class="nav">
+            <li>
+              <a href="../components/buttons.html">
+                <span class="sidebar-mini">B</span>
+                <span class="sidebar-normal">Buttons</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/grid.html">
+                <span class="sidebar-mini">GS</span>
+                <span class="sidebar-normal">Grid System</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/panels.html">
+                <span class="sidebar-mini">P</span>
+                <span class="sidebar-normal">Panels</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/sweet-alert.html">
+                <span class="sidebar-mini">SA</span>
+                <span class="sidebar-normal">Sweet Alert</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/notifications.html">
+                <span class="sidebar-mini">N</span>
+                <span class="sidebar-normal">Notifications</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/icons.html">
+                <span class="sidebar-mini">I</span>
+                <span class="sidebar-normal">Icons</span>
+              </a>
+            </li>
+            <li>
+              <a href="../components/typography.html">
+                <span class="sidebar-mini"><i class="ti-panel"></i></span>
+                <span class="sidebar-normal">Typography</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>*/-->
+      <!--/*<li>
+        <a href="../calendar.html">
+          <i class="ti-calendar"></i>
+          <p>Calendar</p>
+        </a>
+      </li>*/-->
+    </ul>
+  </div>
+</div>
+</html>

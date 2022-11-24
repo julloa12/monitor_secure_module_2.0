@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--suppress HtmlRequiredTitleElement -->
+<html lang="en">
+<head th:replace="fragments/head :: head(title = 'Transacciones Atendidas')"></head>
+<body>
+
+<div class="wrapper">
+    <div th:replace="fragments/sidenav :: sidenav"></div>
+
+    <div class="main-panel ps">
+        <nav th:replace="fragments/navbar :: navbar(title='Transacciones Atendidas')"></nav>
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">% de transacciones atendidas por SAM</div>
+                            </div>
+                            <div class="card-content">
+                                <div id="svg"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="fragments/footer :: footer">
+        </footer>
+    </div>
+</div>
+
+<section th:replace="fragments/scripts :: scripts"></section>
+
+<script type="text/javascript">
+    $(function () {
+        console.log('Ready!')
+        $.get("/sam/file-list", function (data, status) {
+
+            let successSeries = [];
+            let failedSeries = [];
+            //let total = [];
+            let lbls = [];
+
+           // for(let s of data){
+            //    total.push(s.successUses+s.failedUses)
+           // }
+
+
+
+
+            for (let s of data){
+                lbls.push("SAM " + s.samNumber)
+                var total=s.successUses+s.failedUses;
+                successSeries.push(Math.round(((100*s.successUses)/total)*100)/100)
+                failedSeries.push(Math.round(((100*s.failedUses)/total)*100)/100)
+            }
+
+            let chartData = {
+                labels: lbls,
+                series: [successSeries, failedSeries]
+
+            };
+
+            //let options = { fullWidth: true,showArea: true,seriesBarDistance: 1, axisX: {showGrid: false}, height: "350px", axisY: {stepSize: 1,onlyInteger: true},style: 'fill-opacity: 1'};
+            let options = { fullWidth: true,showArea: true,seriesBarDistance: 10, axisX: {showGrid: false}, height: "350px", axisY: {stepSize: 1,onlyInteger: true},style: 'fill-opacity: 1'};
+
+
+
+
+            let responsiveOptions = [];
+            Chartist.Bar('#svg', chartData, options, responsiveOptions);
+            console.log("STATUS: " + status, data)
+        })
+    });
+</script>
+</body>
+</html>
